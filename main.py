@@ -1,34 +1,9 @@
-# instagram-liker
-
-[![N|Solid](https://vashukarn.github.io/top-logo.png)](https://vashukarn.github.io/)
-
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://github.com/vashukarn/automated-qr-code-generator)
-
-## General Information
-
-It is a python automated script that likes all posts of a particular ig user and takes screenshots along with it.
-
-## Prerequisites
-
-These should run without any error: <br>
-
-- All modules according to requirements <br>
-
-```
-pip install -r requirements.txt
-```
-
-- Chrome webdriver should be installed <br>
-- Path of Chrome Browser should be added to PATH <br>
-
-```sh
 from selenium import webdriver
-import time
-```
+from time import sleep
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.action_chains import ActionChains
 
-#### First you're logged into your instagram account for which you have to fill your correct credentials
 
-```sh
 def login():
     driver.maximize_window()
     driver.get('https://www.instagram.com/')
@@ -54,11 +29,8 @@ def login():
             '/html/body/div[4]/div/div/div[3]/button[2]').click()
     except Exception as e:
         print("Successfully logged in" + str(e))
-```
 
-#### Then starting to send likes to the user account (Make sure you're following that user or the user is public)
 
-```sh
 def main():
     print('Starting to send likes to user')
     driver.get('https://www.instagram.com/' + user + '/')
@@ -76,17 +48,27 @@ def main():
             'coreSpriteRightPaginationArrow').click()
         i += 1
         sleep(1)
-```
 
-#### If you want to go headless just uncomment these two lines
 
-```sh
+# Enter your credentials here
+print("Enter correct credentials to make this script work")
+username = str(input('Enter your instagram username : '))
+password = str(input('Enter your instagram password : '))
+
+# Enter the posts you want to like here
+user = str(input('Enter instagram id of user : '))
+num = int(input('Enter no of posts you want to like : '))
+
+print("Opening Chrome Browser...")
+
+chrome_options = Options()
+
+# Uncomment two lines down if you don't want chrome window to popup and go headless
 chrome_options.add_argument('--headless')
 chrome_options.add_argument('--disable-gpu')
-```
-
-## License:
-
-#### MIT
-
-**Free Software, Hell Yeah!**
+driver = webdriver.Chrome(chrome_options=chrome_options)
+login()
+main()
+driver.quit()
+print(str(num) + ' posts of ' + user +
+      ' liked and screenshots saved successfully. ')
